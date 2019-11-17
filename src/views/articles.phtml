@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<?php
+    include_once '../views/layouts/header.phtml';
+?>
+
+    <body>
+        <div class="ui three column centered grid" style="margin-top: 50px">
+            <?php foreach ($all_articles as $key => $article): ?>
+                <div class="row">
+                    <div class="ui card column">
+                        <div class="content">
+                            <div class="header"><?= $article['article_name']; ?></div>
+                            <div class="meta"><?= $article['category']; ?></div>
+                            <div class="description">
+                                <p>
+                                    <?= $article['article']; ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <div class="ui two buttons">
+                                <a href="/article/show?id=<?= $article['id']; ?>"
+                                   class="ui basic blue button">
+                                    Edit
+                                </a>
+                                <a href="/articles/remove?id=<?= $article['id']; ?>"
+                                   class="ui basic red button">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
+            <a href="/" style="margin-top: 50px; display: block"> Add new Article</a>
+        </div>
+    </body>
+</html>

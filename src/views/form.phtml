@@ -1,0 +1,39 @@
+<form action="/articles/add"
+      method="post"
+      class="ui form <?= $is_field_empty ? 'error' : ''; ?>"
+      style="margin-top: 40px">
+
+    <h3 class="ui dividing header">Add new article</h3>
+
+    <div class="ui error message">
+        <div class="header">We had some issues</div>
+        <p>Please fulfill all fields</p>
+    </div>
+
+    <div class="field">
+        <label for="article_name">Article Name</label>
+        <input type="text"
+               name="article_name"
+               id="article_name"
+               placeholder="Your article">
+    </div>
+
+    <div class="field">
+        <label for="article">Article</label>
+        <textarea id="article"
+                  name="article"
+                  rows="3"
+        ></textarea>
+    </div>
+
+    <div class="field">
+        <label for="categories">Category</label>
+        <select id="categories" name="category_id">
+            <?php foreach ($categories as $key => $category): ?>
+                <option value="<?= $key; ?>"><?= $category; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <button type="submit" class="ui button green">Add</button>
+</form>
