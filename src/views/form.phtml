@@ -29,8 +29,8 @@
     <div class="field">
         <label for="categories">Category</label>
         <select id="categories" name="category_id">
-            <?php foreach ($categories as $key => $category): ?>
-                <option value="<?= $key; ?>"><?= $category; ?></option>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?= $category['id']; ?>"><?= $category['name']; ?></option>
             <?php endforeach; ?>
         </select>
     </div>

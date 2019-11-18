@@ -1,8 +1,10 @@
 <?php
 
-
-function notFoundAction(): void
+class NotFoundController
 {
-    require_once '../views/not-found/index.phtml';
-    die;
+    public function indexAction(): void
+    {
+        require_once '../views/not-found/index.phtml';
+        die;
+    }
 }

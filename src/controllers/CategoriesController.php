@@ -1,20 +1,6 @@
 <?php
 
-function indexCategoriesAction(): void
+class CategoriesController
 {
 
-}
-
-function getAllCategories(): array
-{
-    $categories = allCategories();
-
-    return $categories;
-}
-
-function getCategoryById(int $id): string
-{
-    $category = categoryById($id);
-
-    return $category;
 }
