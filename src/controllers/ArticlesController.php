@@ -118,4 +118,18 @@ class ArticlesController extends Controller
         }
     }
 
+    public function showDetailArticle(): void
+    {
+        $id = $_REQUEST['id'];
+
+        $article = (new Articles())->getDetailArticle($id, true)[0];
+
+        $caregories = (new Categories())->all();
+
+        $comments = (new Comments())->getCommentById($id);
+
+        require_once "../views/articles/detail/index.phtml";
+        die;
+    }
+
 }

@@ -24,6 +24,12 @@
                         </a>
                     </div>
                 </div>
+                <?php else: ?>
+                    <div class="extra">
+                        <a href="/articles/detail?id=<?= $article['id']; ?>">
+                            Additional Details
+                        </a>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>

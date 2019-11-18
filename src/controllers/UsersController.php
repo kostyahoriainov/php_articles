@@ -32,6 +32,9 @@ class UsersController extends Controller
             die;
         }
 
+        if(isset($request['remember'])) {
+            (new Model())->saveSessionId();
+        }
         header('Location: /articles');
         die;
     }

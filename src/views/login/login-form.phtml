@@ -1,4 +1,7 @@
-<form class="ui form <?= isset($empty) || isset($auth_error) ? 'error' : '' ?>" method="post" action="/user/login">
+<form class="ui form <?= isset($empty) || isset($auth_error) ? 'error' : '' ?>"
+      method="post"
+      action="/user/login">
+    <h4 class="ui dividing header">Login</h4>
 
     <?php if (isset($empty)): ?>
     <div class="ui error message">
@@ -30,6 +33,14 @@
                id="password"
                name="password"
                placeholder="Password">
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox"
+                   id="remember"
+                   name="remember">
+            <label for="remember">Remember me on this computer</label>
+        </div>
     </div>
     <p>
         Don't have an account? <a href="/user/sign-up">Register</a>

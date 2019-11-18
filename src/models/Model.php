@@ -56,4 +56,9 @@ class Model
 
         return true;
     }
+
+    public function saveSessionId(): void
+    {
+        setcookie('OLDSESSION', session_id(), time() + 3600, '/');
+    }
 }

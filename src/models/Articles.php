@@ -44,13 +44,13 @@ class Articles extends Model
         return $articles;
     }
 
-    public function articleById(int $id): array
+    public function articleById(int $id, bool $skipPermission = false): array
     {
         $sql = "SELECT * FROM articles as a WHERE a.id = $id";
 
         $article = $this->fetchData($sql)[0];
 
-        if (!$this->checkUserPermission($article['user_id'])) {
+        if (!$skipPermission && !$this->checkUserPermission($article['user_id'])) {
             echo 'PERMISSION DENIED';
             die;
         }
@@ -90,6 +90,22 @@ class Articles extends Model
         $result = $this->insertData($sql);
 
         return $result;
+    }
+
+    public function getDetailArticle(int $id): array
+    {
+        $sql = "SELECT a.*, c.name as category_name FROM articles as a 
+                LEFT JOIN categories as c ON a.category_id = c.id 
+                WHERE a.id = $id";
+
+        $article = $this->fetchData($sql);
+
+        if (empty($article)) {
+            header('Location: /not-found');
+            die;
+        }
+
+        return $article;
     }
 
 }
