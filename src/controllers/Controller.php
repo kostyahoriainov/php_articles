@@ -23,4 +23,12 @@ class Controller
         }
     }
 
+    protected function checkAuth(): void
+    {
+        if (!$this->isUserAuth()) {
+            header('Location: /');
+            die;
+        }
+    }
+
 }

@@ -5,10 +5,7 @@ class ArticlesController extends Controller
 
     public function indexAction(): void
     {
-        if (!$this->isUserAuth()) {
-            header('Location: /');
-            die;
-        }
+        $this->checkAuth();
 
         $location = 'all';
         $articles = (new Articles())->all();
@@ -19,10 +16,7 @@ class ArticlesController extends Controller
 
     public function showNewArticleForm(): void
     {
-        if (!$this->isUserAuth()) {
-            header('Location: /');
-            die;
-        }
+        $this->checkAuth();
 
         if (isset($_REQUEST['empty'])) {
             $empty = true;
@@ -35,10 +29,7 @@ class ArticlesController extends Controller
 
     public function addArticleAction(): void
     {
-        if (!$this->isUserAuth()) {
-            header('Location: /');
-            die;
-        }
+        $this->checkAuth();
 
         $request = $this->getRequest();
 
@@ -54,10 +45,7 @@ class ArticlesController extends Controller
 
     public function showUserArticles(): void
     {
-        if (!$this->isUserAuth()) {
-            header('Location: /');
-            die;
-        }
+        $this->checkAuth();
 
         $edit_on = true;
         $location = 'user';
@@ -69,10 +57,7 @@ class ArticlesController extends Controller
 
     public function removeArticle(): void
     {
-        if (!$this->isUserAuth()) {
-            header('Location: /');
-            die;
-        }
+        $this->checkAuth();
 
         $article_id = $_REQUEST['id'];
 
@@ -86,10 +71,7 @@ class ArticlesController extends Controller
 
     public function showEditArticle(): void
     {
-        if (!$this->isUserAuth()) {
-            header('Location: /');
-            die;
-        }
+        $this->checkAuth();
 
         if (isset($_REQUEST['empty'])) {
             $empty = true;
@@ -120,11 +102,15 @@ class ArticlesController extends Controller
 
     public function showDetailArticle(): void
     {
+        $this->checkAuth();
+
         $id = $_REQUEST['id'];
 
         $article = (new Articles())->getDetailArticle($id, true)[0];
 
-        $caregories = (new Categories())->all();
+        if (isset($_REQUEST['empty'])) {
+            $empty = true;
+        }
 
         $comments = (new Comments())->getCommentById($id);
 
