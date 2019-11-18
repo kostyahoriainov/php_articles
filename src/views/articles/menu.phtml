@@ -1,12 +1,9 @@
 <div class="ui secondary pointing menu">
-    <a class="active item">
+    <a class="<?= isset($location) && $location === 'all' ? 'active' : '' ?> item" href="/articles">
         Home
     </a>
-    <a class="item">
-        Messages
-    </a>
-    <a class="item">
-        Friends
+    <a class="<?= isset($location) && $location === 'user' ? 'active' : '' ?> item" href="/articles/user-articles">
+        My Articles
     </a>
     <div class="right menu">
         <a href="/user/logout"

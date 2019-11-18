@@ -7,19 +7,16 @@ class Users extends Model
     {
         $hashed_password = md5($password);
 
-        $connection = $this->getConnection($this->BEETROOT_DATABASE);
-
         $sql = "SELECT id FROM users WHERE login = '$login' AND password = '$hashed_password'";
 
-        $result = $connection->query($sql);
+        $result = $this->fetchData($sql);
 
-        $connection->close();
-        if (!$result->num_rows) {
+        if (empty($result)) {
             return false;
         }
 
         if (!isset($_SESSION['auth'])) {
-            $_SESSION['auth'] = mysqli_fetch_assoc($result)['id'];
+            $_SESSION['auth'] = $result[0]['id'];
         }
 
         return true;
@@ -33,13 +30,11 @@ class Users extends Model
         $password = md5(trim($request['password']));
         $email = trim($request['email']);
 
-        $connection = $this->getConnection($this->BEETROOT_DATABASE);
 
         $sql = "INSERT INTO users (`first_name`, `last_name`, `email`, `login`, `password`)
                 VALUES ('$first_name', '$last_name', '$email', '$login', '$password')";
 
-        $result = $connection->query($sql);
-        $connection->close();
+        $result = $this->insertData($sql);
 
         return $result;
     }

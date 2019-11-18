@@ -5,5 +5,12 @@
 
     <?php include_once "../views/articles/menu.phtml"; ?>
 
+    <?php
+    if(!empty($articles)):
+        include_once "../views/articles/article-list.phtml";
+    else:
+        include_once "../views/articles/no-articles.phtml";
+    endif;
+    ?>
 </body>
 </html>

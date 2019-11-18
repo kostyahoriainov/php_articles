@@ -1,0 +1,33 @@
+<div class="ui two column centered grid" style="margin-top: 50px">
+    <?php foreach ($articles as $key => $article): ?>
+        <div class="row">
+            <div class="ui card column">
+                <div class="content">
+                    <div class="header"><?= $article['name']; ?></div>
+                    <div class="meta"><?= ucfirst($article['category_name']); ?></div>
+                    <div class="description">
+                        <p>
+                            <?= $article['text']; ?>
+                        </p>
+                    </div>
+                </div>
+                <?php if (isset($edit_on)): ?>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <a href="/articles/edit?id=<?= $article['id']; ?>"
+                           class="ui basic blue button">
+                            Edit
+                        </a>
+                        <a href="/articles/remove?id=<?= $article['id']; ?>"
+                           class="ui basic red button">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+
+    <a href="/articles/add" class="ui right floated button green" style="margin-top: 15px"> Add new Article</a>
+</div>

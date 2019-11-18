@@ -1,6 +1,6 @@
 <?php
 
-class CategoriesController
+class CategoriesController extends Controller
 {
 
 }

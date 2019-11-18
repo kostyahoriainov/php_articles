@@ -1,16 +1,16 @@
-<form class="ui form <?= $empty || $create_user_error ? 'error' : ''; ?>"
+<form class="ui form <?= isset($empty) || isset($create_user_error) ? 'error' : ''; ?>"
       method="post"
       action="/user/sign-up/action">
     <h4 class="ui dividing header">Sign Up Form</h4>
 
-    <?php if ($create_user_error): ?>
+    <?php if (isset($create_user_error)): ?>
         <div class="ui error message">
             <div class="header">
                 This login is already taken
             </div>
         </div>
     <?php else: ?>
-        <div class="ui <?= $empty ? 'error' : 'info'; ?> message">
+        <div class="ui <?= isset($empty) ? 'error' : 'info'; ?> message">
             <div class="header">
                 Please fulfill all fields
             </div>

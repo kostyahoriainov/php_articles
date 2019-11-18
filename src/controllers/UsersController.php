@@ -23,12 +23,7 @@ class UsersController extends Controller
     {
         $request = $this->getRequest();
 
-        foreach ($request as $field) {
-            if (empty(trim($field))) {
-                header('Location: /?empty=1');
-                die;
-            }
-        }
+        $this->checkRequestFields($request, '/?empty=1');
 
         $auth = (new Users())->authUser(trim($request['login']), trim($request['password']));
 
@@ -43,7 +38,6 @@ class UsersController extends Controller
 
     public function showSignFormAction(): void
     {
-        $empty = $create_user_error =false;
         if (isset($_REQUEST['empty'])) {
             $empty = true;
         }
@@ -58,12 +52,7 @@ class UsersController extends Controller
     {
         $request = $this->getRequest();
 
-        foreach ($request as $field) {
-            if (empty(trim($field))) {
-                header('Location: /user/sign-up?empty=1');
-                die;
-            }
-        }
+        $this->checkRequestFields($request, '/user/sign-up?empty=1');
 
         $result = (new Users())->createNewUser($request);
         if (!$result) {

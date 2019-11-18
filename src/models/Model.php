@@ -12,4 +12,48 @@ class Model
 
         return $connection;
     }
+
+    protected function fetchData(string $sql): array
+    {
+        $data = [];
+
+        $connection = $this->getConnection($this->BEETROOT_DATABASE);
+
+        $result = $connection->query($sql);
+
+        $connection->close();
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
+    protected function insertData(string $sql): bool
+    {
+        $connection = $this->getConnection($this->BEETROOT_DATABASE);
+
+        $result = $connection->query($sql);
+
+        $connection->close();
+
+        return $result;
+    }
+
+    protected function getAuthUserId(): int
+    {
+        return (int) $_SESSION['auth'];
+    }
+
+    protected function checkUserPermission(int $article_user_id): bool
+    {
+        $user_id = $this->getAuthUserId();
+
+        if ($article_user_id != $user_id) {
+            return false;
+        }
+
+        return true;
+    }
 }

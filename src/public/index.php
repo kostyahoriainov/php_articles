@@ -31,6 +31,24 @@ switch ($uri) {
     case '/user/logout':
         (new UsersController())->logoutAction();
         break;
+    case '/articles/add/action':
+        (new ArticlesController())->addArticleAction();
+        break;
+    case '/articles/add':
+        (new ArticlesController())->showNewArticleForm();
+        break;
+    case '/articles/edit/action':
+        (new ArticlesController())->editArticleAction();
+        break;
+    case '/articles/edit':
+        (new ArticlesController())->showEditArticle();
+        break;
+    case '/articles/remove':
+        (new ArticlesController())->removeArticle();
+        break;
+    case '/articles/user-articles':
+        (new ArticlesController())->showUserArticles();
+        break;
     case '/articles':
         (new ArticlesController())->indexAction();
         break;
