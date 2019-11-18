@@ -1,0 +1,60 @@
+<form class="ui form <?= $empty || $create_user_error ? 'error' : ''; ?>"
+      method="post"
+      action="/user/sign-up/action">
+    <h4 class="ui dividing header">Sign Up Form</h4>
+
+    <?php if ($create_user_error): ?>
+        <div class="ui error message">
+            <div class="header">
+                This login is already taken
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="ui <?= $empty ? 'error' : 'info'; ?> message">
+            <div class="header">
+                Please fulfill all fields
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <div class="field">
+        <label>Name</label>
+        <div class="two fields">
+            <div class="field">
+                <input type="text"
+                       name="first_name"
+                       placeholder="First Name">
+            </div>
+            <div class="field">
+                <input type="text"
+                       name="last_name"
+                       placeholder="Last Name">
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <label for="login">Login</label>
+        <input type="text"
+               id="login"
+               name="login"
+               placeholder="Your login">
+    </div>
+    <div class="field">
+        <label id="password">Password</label>
+        <input type="password"
+               id="password"
+               name="password"
+               placeholder="Password">
+    </div>
+    <div class="field">
+        <label id="email">Email</label>
+        <input type="email"
+               id="email"
+               name="email"
+               placeholder="Email">
+    </div>
+    <p>
+        Have an account? <a href="/">Sign up</a>
+    </p>
+    <button class="ui right floated button green" type="submit">Sign Up</button>
+</form>
