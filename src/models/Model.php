@@ -3,7 +3,7 @@
 class Model
 {
 
-    protected $BEETROOT_DATABASE = 'beetroot';
+    protected const BEETROOT_DATABASE = 'beetroot';
 
     protected function getConnection(string $database)
     {
@@ -17,7 +17,7 @@ class Model
     {
         $data = [];
 
-        $connection = $this->getConnection($this->BEETROOT_DATABASE);
+        $connection = $this->getConnection(self::BEETROOT_DATABASE);
 
         $result = $connection->query($sql);
 
@@ -32,7 +32,7 @@ class Model
 
     protected function insertData(string $sql): bool
     {
-        $connection = $this->getConnection($this->BEETROOT_DATABASE);
+        $connection = $this->getConnection(self::BEETROOT_DATABASE);
 
         $result = $connection->query($sql);
 
@@ -41,7 +41,7 @@ class Model
         return $result;
     }
 
-    protected function getAuthUserId(): int
+    public function getAuthUserId(): int
     {
         return (int) $_SESSION['auth'];
     }

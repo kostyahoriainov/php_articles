@@ -1,10 +1,10 @@
 <div class="ui two column centered grid" style="margin-top: 50px">
-    <?php foreach ($articles as $key => $article): ?>
+    <?php foreach ($articles as $key => $view_article): ?>
         <div class="row">
             <div class="ui card column">
                 <div class="content">
-                    <div class="header"><?= $article['name']; ?></div>
-                    <div class="meta"><?= ucfirst($article['category_name']); ?></div>
+                    <div class="header"><?= $view_article['name']; ?></div>
+                    <div class="meta"><?= ucfirst($view_article['category_name']); ?></div>
                     <div class="description">
                         <p>
                             <?= $article['text']; ?>
@@ -14,11 +14,11 @@
                 <?php if (isset($edit_on)): ?>
                 <div class="extra content">
                     <div class="ui two buttons">
-                        <a href="/articles/edit?id=<?= $article['id']; ?>"
+                        <a href="/articles/edit?id=<?= $view_article['id']; ?>"
                            class="ui basic blue button">
                             Edit
                         </a>
-                        <a href="/articles/remove?id=<?= $article['id']; ?>"
+                        <a href="/articles/remove?id=<?= $view_article['id']; ?>"
                            class="ui basic red button">
                             Delete
                         </a>
@@ -26,9 +26,17 @@
                 </div>
                 <?php else: ?>
                     <div class="extra">
-                        <a href="/articles/detail?id=<?= $article['id']; ?>">
+                        <a href="/articles/detail?id=<?= $view_article['id']; ?>">
                             Additional Details
                         </a>
+
+                        <span class="right floated">
+                            <a href="/rating/add?id=<?= $view_article['id']; ?>">
+                                <i class="heart <?= $view_article['user_has_rated'] ? 'red' : 'outline'  ?> like icon"></i>
+                            </a>
+                            <?= $view_article['rating_cnt'] ?>
+                            likes
+                        </span>
                     </div>
                 <?php endif; ?>
             </div>

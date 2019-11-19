@@ -8,7 +8,21 @@ class ArticlesController extends Controller
         $this->checkAuth();
 
         $location = 'all';
+        $user_id = (new Model())->getAuthUserId();
         $articles = (new Articles())->all();
+
+
+        foreach ($articles as &$article) {
+            $article['rating'] = (new Rating())->allById($article['id']);
+            $article['rating_cnt'] = count($article['rating']);
+            $article['user_has_rated'] = false;
+            foreach ($article['rating'] as $item) {
+                if ($item['user_id'] == $user_id) {
+                    $article['user_has_rated'] = true;
+                    break;
+                }
+            }
+        }
 
         require_once "../views/articles/index.phtml";
         die;
