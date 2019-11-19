@@ -59,6 +59,6 @@ class Model
 
     public function saveSessionId(): void
     {
-        setcookie('OLDSESSION', session_id(), time() + 3600, '/');
+        setcookie('OLDSESSION', session_id(), time() + 60 * 60 * 24, '/');
     }
 }

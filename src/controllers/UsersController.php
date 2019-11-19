@@ -69,6 +69,7 @@ class UsersController extends Controller
 
     public function logoutAction(): void
     {
+        setcookie('OLDSESSION', '', time(), '/');
         session_destroy();
         header('Location: /');
         die;
