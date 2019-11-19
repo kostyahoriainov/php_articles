@@ -24,6 +24,8 @@ class ArticlesController extends Controller
             }
         }
 
+        unset($article);
+
         require_once "../views/articles/index.phtml";
         die;
     }

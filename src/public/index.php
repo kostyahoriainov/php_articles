@@ -67,7 +67,7 @@ switch ($uri) {
     case '/comments/add':
         (new CommentsController())->addCommentAction();
         break;
-    case '/rating/add':
+    case '/rating/toggle':
         (new RatingController())->changeRatingAction();
         break;
     case '/':
