@@ -96,6 +96,8 @@ class ArticlesController extends Controller
 
     public function editArticleAction(): void
     {
+        $this->checkAuth();
+
         $request = $this->getRequest();
 
         $this->checkRequestFields($request, '/articles/edit?id=' . $request['id'] . '&empty=1');

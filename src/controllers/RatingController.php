@@ -24,9 +24,7 @@ class RatingController extends Controller
             ? (new Rating())->remove($user_id, $article_id)
             : (new Rating())->add($user_id, $article_id);
 
-        if ($result) {
-            header('Location: /articles');
-            die;
-        }
+        header('Location: /articles');
+        die;
     }
 }
