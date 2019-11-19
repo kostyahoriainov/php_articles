@@ -13,15 +13,7 @@ class ArticlesController extends Controller
 
 
         foreach ($articles as &$article) {
-            $article['rating'] = (new Rating())->allById($article['id']);
-            $article['rating_cnt'] = count($article['rating']);
-            $article['user_has_rated'] = false;
-            foreach ($article['rating'] as $item) {
-                if ($item['user_id'] == $user_id) {
-                    $article['user_has_rated'] = true;
-                    break;
-                }
-            }
+            $article = $this->getArticleRating($article, $user_id);
         }
 
         unset($article);
@@ -120,6 +112,8 @@ class ArticlesController extends Controller
     {
         $this->checkAuth();
 
+        $user_id = (new Model())->getAuthUserId();
+
         $id = $_REQUEST['id'];
 
         $article = (new Articles())->getDetailArticle($id, true)[0];
@@ -128,10 +122,27 @@ class ArticlesController extends Controller
             $empty = true;
         }
 
+        $article = $this->getArticleRating($article, $user_id);
+
         $comments = (new Comments())->getCommentById($id);
 
         require_once "../views/articles/detail/index.phtml";
         die;
+    }
+
+    private function getArticleRating(array $article, int $user_id): array
+    {
+        $article['rating'] = (new Rating())->allById($article['id']);
+        $article['rating_cnt'] = count($article['rating']);
+        $article['user_has_rated'] = false;
+        foreach ($article['rating'] as $item) {
+            if ($item['user_id'] == $user_id) {
+                $article['user_has_rated'] = true;
+                break;
+            }
+        }
+
+        return $article;
     }
 
 }
