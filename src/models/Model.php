@@ -5,38 +5,53 @@ class Model
 
     protected const BEETROOT_DATABASE = 'beetroot';
 
-    protected function getConnection(string $database)
+    protected function getConnection(string $database): ?PDO
     {
         $db = DB_CONFIG['mysql'][$database];
-        $connection = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database_name']);
+        $connection = null;
+
+        $dsn = $this->formatDsn($database);
+        try {
+            $connection = new PDO($dsn, $db['user'], $db['password']);
+        } catch (PDOException $e) {
+            echo 'Подключение не удалось: ' . $e->getMessage();
+        }
 
         return $connection;
     }
 
-    protected function fetchData(string $sql): array
+    protected function fetchData(string $sql, array $params = []): array
     {
-        $data = [];
-
         $connection = $this->getConnection(self::BEETROOT_DATABASE);
 
-        $result = $connection->query($sql);
+        $query = $connection->prepare($sql);
 
-        $connection->close();
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            $data[] = $row;
+        if (!empty($params)) {
+            foreach ($params as $key => $param) {
+                $query->bindValue($key, $param);
+            }
         }
+
+        $query->execute();
+
+        $data = $query->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
     }
 
-    protected function insertData(string $sql): bool
+    protected function insertData(string $sql, array $params = []): bool
     {
         $connection = $this->getConnection(self::BEETROOT_DATABASE);
 
-        $result = $connection->query($sql);
+        $query = $connection->prepare($sql);
 
-        $connection->close();
+        if (!empty($params)) {
+            foreach ($params as $key => $param) {
+                $query->bindValue($key, $param);
+            }
+        }
+
+        $result = $query->execute();
 
         return $result;
     }
@@ -60,5 +75,10 @@ class Model
     public function saveSessionId(): void
     {
         setcookie('OLDSESSION', session_id(), time() + 60 * 60 * 24, '/');
+    }
+
+    private function formatDsn(string $database): string
+    {
+        return "mysql:dbname=$database;host=mysql";
     }
 }

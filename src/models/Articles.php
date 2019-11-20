@@ -23,10 +23,17 @@ class Articles extends Model
         $category_id = trim($request['category_id']);
 
 
-        $sql = "INSERT INTO articles (`name`, `text`, `category_id`, `user_id`) 
-                VALUES ('$name', '$text', '$category_id', '$user_id')";
+        $sql = "INSERT INTO articles (name, text, category_id, user_id) 
+                VALUES (:name, :text, :category_id, :user_id)";
 
-        $result = $this->insertData($sql);
+        $values = [
+            ':name' =>$name,
+            ':text' =>$text,
+            ':category_id' => $category_id,
+            ':user_id' =>$user_id
+        ];
+
+        $result = $this->insertData($sql, $values);
 
         return $result;
     }
@@ -37,18 +44,26 @@ class Articles extends Model
 
         $sql = "SELECT a.*, c.name as category_name FROM articles as a 
                 LEFT JOIN categories as c ON a.category_id = c.id 
-                WHERE a.user_id = $user_id";
+                WHERE a.user_id = :user_id";
 
-        $articles = $this->fetchData($sql);
+        $values = [
+            ':user_id' => $user_id
+        ];
+
+        $articles = $this->fetchData($sql, $values);
 
         return $articles;
     }
 
     public function articleById(int $id, bool $skipPermission = false): array
     {
-        $sql = "SELECT * FROM articles as a WHERE a.id = $id";
+        $sql = "SELECT * FROM articles as a WHERE a.id = :id";
 
-        $article = $this->fetchData($sql)[0];
+        $values = [
+            ':id' => $id
+        ];
+
+        $article = $this->fetchData($sql, $values)[0];
 
         if (!$skipPermission && !$this->checkUserPermission($article['user_id'])) {
             echo 'PERMISSION DENIED';
@@ -67,9 +82,13 @@ class Articles extends Model
     {
         $this->articleById($article_id);
 
-        $sql = "DELETE FROM articles WHERE id = $article_id";
+        $sql = "DELETE FROM articles WHERE id = :article_id";
 
-        $result = $this->insertData($sql);
+        $values = [
+            'article_id' => $article_id
+        ];
+
+        $result = $this->insertData($sql, $values);
 
         return $result;
     }
@@ -82,12 +101,19 @@ class Articles extends Model
         $category_id = trim($request['category_id']);
 
         $sql = "UPDATE articles 
-                SET `name` = '$name', 
-                    `text` = '$text', 
-                    `category_id` = '$category_id' 
-                WHERE `id` = '$id'";
+                SET name = :name, 
+                    text = :text, 
+                    category_id = :category_id 
+                WHERE id = :id";
 
-        $result = $this->insertData($sql);
+        $values = [
+            ':name' => $name,
+            ':text' => $text,
+            ':category_id' => $category_id,
+            ':id' => $id
+        ];
+
+        $result = $this->insertData($sql, $values);
 
         return $result;
     }
@@ -96,9 +122,13 @@ class Articles extends Model
     {
         $sql = "SELECT a.*, c.name as category_name FROM articles as a 
                 LEFT JOIN categories as c ON a.category_id = c.id 
-                WHERE a.id = $id";
+                WHERE a.id = :id";
 
-        $article = $this->fetchData($sql);
+        $values = [
+            ':id' => $id
+        ];
+
+        $article = $this->fetchData($sql, $values);
 
         if (empty($article)) {
             header('Location: /not-found');

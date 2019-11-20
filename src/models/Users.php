@@ -7,9 +7,14 @@ class Users extends Model
     {
         $hashed_password = md5($password);
 
-        $sql = "SELECT id FROM users WHERE login = '$login' AND password = '$hashed_password'";
+        $sql = "SELECT id FROM users WHERE login = :login AND password = :password";
 
-        $result = $this->fetchData($sql);
+        $values = [
+            ':login' => $login,
+            ':password' => $hashed_password
+        ];
+
+        $result = $this->fetchData($sql, $values);
 
         if (empty($result)) {
             return false;
@@ -31,10 +36,18 @@ class Users extends Model
         $email = trim($request['email']);
 
 
-        $sql = "INSERT INTO users (`first_name`, `last_name`, `email`, `login`, `password`)
-                VALUES ('$first_name', '$last_name', '$email', '$login', '$password')";
+        $sql = "INSERT INTO users (first_name, last_name, email, login, password)
+                VALUES (:first_name, :last_name, :email, :login, :password)";
 
-        $result = $this->insertData($sql);
+        $values = [
+            ':first_name' => $first_name,
+            ':last_name' => $last_name,
+            ':email' => $email,
+            ':login' => $login,
+            ':password' => $password
+        ];
+
+        $result = $this->insertData($sql, $values);
 
         return $result;
     }

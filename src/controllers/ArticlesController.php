@@ -12,11 +12,9 @@ class ArticlesController extends Controller
         $articles = (new Articles())->all();
 
 
-        foreach ($articles as &$article) {
-            $article = $this->getArticleRating($article, $user_id);
+        foreach ($articles as $key => $article) {
+            $articles[$key] = $this->getArticleRating($article, $user_id);
         }
-
-        unset($article);
 
         require_once "../views/articles/index.phtml";
         die;

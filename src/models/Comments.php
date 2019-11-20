@@ -8,9 +8,15 @@ class Comments extends Model
         $article_id = $request['article_id'];
         $text = trim($request['text']);
 
-        $sql = "INSERT INTO comments (`article_id`, `user_id`, `text`) VALUES ('$article_id', '$user_id', '$text')";
+        $sql = "INSERT INTO comments (article_id, user_id, text) VALUES (:article_id, :user_id, :text)";
 
-        $result = $this->insertData($sql);
+        $values = [
+            ':article_id' => $article_id,
+            ':user_id' => $user_id,
+            ':text' => $text
+        ];
+
+        $result = $this->insertData($sql, $values);
 
         return $result;
     }
@@ -19,9 +25,13 @@ class Comments extends Model
     {
         $sql = "SELECT c.*, u.first_name, u.last_name FROM comments as c
                 LEFT JOIN users as u ON c.user_id = u.id
-                WHERE c.article_id = $id";
+                WHERE c.article_id = :id";
 
-        $result = $this->fetchData($sql);
+        $values = [
+            ':id' => $id
+        ];
+
+        $result = $this->fetchData($sql, $values);
 
         return $result;
     }
