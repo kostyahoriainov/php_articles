@@ -5,17 +5,20 @@ class Model
 
     protected const BEETROOT_DATABASE = 'beetroot';
 
-    protected function getConnection(string $database): ?PDO
+    private static $db_connection = array();
+
+    protected static function getConnection(string $database): PDO
     {
         $db = DB_CONFIG['mysql'][$database];
-        $connection = null;
-
-        $dsn = $this->formatDsn($database);
+        $dsn = "mysql:dbname=$database;host=mysql";
         try {
-            $connection = new PDO($dsn, $db['user'], $db['password']);
+            if (!isset(self::$db_connection['mysql'])) {
+                self::$db_connection['mysql'] = new PDO($dsn, $db['user'], $db['password']);
+            }
         } catch (PDOException $e) {
             echo 'Подключение не удалось: ' . $e->getMessage();
         }
+        $connection = self::$db_connection['mysql'];
 
         return $connection;
     }
@@ -79,6 +82,6 @@ class Model
 
     private function formatDsn(string $database): string
     {
-        return "mysql:dbname=$database;host=mysql";
+        return "";
     }
 }
