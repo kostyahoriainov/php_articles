@@ -2,36 +2,36 @@
 
 class Articles extends Model
 {
+
+    const STATUS_ACTIVE = 0;
+    const STATUS_REMOVED = 1;
+
     public function all(): array
     {
-        $articles = [];
-
         $sql = "SELECT a.*, c.name as category_name FROM articles as a 
-                LEFT JOIN categories as c ON a.category_id = c.id";
+                LEFT JOIN categories as c ON a.category_id = c.id
+                WHERE a.status = :status";
 
-        $articles = $this->fetchData($sql);
+        $values = [
+            ':status' => self::STATUS_ACTIVE
+        ];
+
+        $articles = $this->fetchData($sql, $values);
 
         return $articles;
     }
 
     public function add($request): bool
     {
-        $user_id = $this->getAuthUserId();
-
-        $name = trim($request['name']);
-        $text = trim($request['text']);
-        $category_id = trim($request['category_id']);
-
+        $values = [
+            ':name' => trim($request['name']),
+            ':text' => trim($request['text']),
+            ':category_id' => trim($request['category_id']),
+            ':user_id' => $this->getAuthUserId()
+        ];
 
         $sql = "INSERT INTO articles (name, text, category_id, user_id) 
                 VALUES (:name, :text, :category_id, :user_id)";
-
-        $values = [
-            ':name' =>$name,
-            ':text' =>$text,
-            ':category_id' => $category_id,
-            ':user_id' =>$user_id
-        ];
 
         $result = $this->insertData($sql, $values);
 
@@ -40,15 +40,14 @@ class Articles extends Model
 
     public function userArticles(): array
     {
-        $user_id = $this->getAuthUserId();
+        $values = [
+            ':user_id' => $this->getAuthUserId(),
+            ':status' => self::STATUS_ACTIVE
+        ];
 
         $sql = "SELECT a.*, c.name as category_name FROM articles as a 
                 LEFT JOIN categories as c ON a.category_id = c.id 
-                WHERE a.user_id = :user_id";
-
-        $values = [
-            ':user_id' => $user_id
-        ];
+                WHERE a.user_id = :user_id AND a.status = :status";
 
         $articles = $this->fetchData($sql, $values);
 
@@ -57,11 +56,11 @@ class Articles extends Model
 
     public function articleById(int $id, bool $skipPermission = false): array
     {
-        $sql = "SELECT * FROM articles as a WHERE a.id = :id";
-
         $values = [
             ':id' => $id
         ];
+
+        $sql = "SELECT * FROM articles as a WHERE a.id = :id";
 
         $article = $this->fetchData($sql, $values)[0];
 
@@ -82,11 +81,13 @@ class Articles extends Model
     {
         $this->articleById($article_id);
 
-        $sql = "DELETE FROM articles WHERE id = :article_id";
-
         $values = [
-            'article_id' => $article_id
+            ':status' => self::STATUS_REMOVED,
+            ':article_id' => $article_id
         ];
+
+        $sql = "UPDATE articles SET status = :status WHERE id = :article_id;";
+
 
         $result = $this->insertData($sql, $values);
 
@@ -95,23 +96,18 @@ class Articles extends Model
 
     public function edit(array $request): bool
     {
-        $id = $request['id'];
-        $name = trim($request['name']);
-        $text = trim($request['text']);
-        $category_id = trim($request['category_id']);
+        $values = [
+            ':name' => trim($request['name']),
+            ':text' => trim($request['text']),
+            ':category_id' => trim($request['category_id']),
+            ':id' => $request['id'],
+        ];
 
         $sql = "UPDATE articles 
                 SET name = :name, 
                     text = :text, 
                     category_id = :category_id 
                 WHERE id = :id";
-
-        $values = [
-            ':name' => $name,
-            ':text' => $text,
-            ':category_id' => $category_id,
-            ':id' => $id
-        ];
 
         $result = $this->insertData($sql, $values);
 
@@ -120,13 +116,13 @@ class Articles extends Model
 
     public function getDetailArticle(int $id): array
     {
-        $sql = "SELECT a.*, c.name as category_name FROM articles as a 
-                LEFT JOIN categories as c ON a.category_id = c.id 
-                WHERE a.id = :id";
-
         $values = [
             ':id' => $id
         ];
+
+        $sql = "SELECT a.*, c.name as category_name FROM articles as a 
+                LEFT JOIN categories as c ON a.category_id = c.id 
+                WHERE a.id = :id";
 
         $article = $this->fetchData($sql, $values);
 
