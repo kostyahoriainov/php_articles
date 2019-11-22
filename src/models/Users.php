@@ -12,7 +12,7 @@ class Users extends Model
 
         $sql = "SELECT id FROM users WHERE login = :login AND password = :password";
 
-        $result = $this->fetchData($sql, $values);
+        $result = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 
         if (empty($result)) {
             return false;
@@ -38,7 +38,7 @@ class Users extends Model
         $sql = "INSERT INTO users (first_name, last_name, email, login, password)
                 VALUES (:first_name, :last_name, :email, :login, :password)";
 
-        $result = $this->insertData($sql, $values);
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }

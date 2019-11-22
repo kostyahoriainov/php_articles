@@ -12,7 +12,7 @@ class Rating extends Model
 
         $sql = "INSERT INTO user_article_rating (user_id, article_id) VALUES (:user_id, :article_id)";
 
-        $result = $this->insertData($sql, $values);
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }
@@ -26,7 +26,7 @@ class Rating extends Model
 
         $sql = "DELETE FROM user_article_rating WHERE user_id = :user_id AND article_id = :article_id";
 
-        $result = $this->insertData($sql, $values);
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }
@@ -40,7 +40,7 @@ class Rating extends Model
 
         $sql = "SELECT u.* FROM user_article_rating as u WHERE u.article_id = :id";
 
-        $result = $this->fetchData($sql, $values);
+        $result = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }

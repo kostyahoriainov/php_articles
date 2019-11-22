@@ -6,7 +6,7 @@ class Categories extends Model
     {
         $sql = "SELECT * FROM categories";
 
-        $categories = $this->fetchData($sql);
+        $categories = $this->fetchData(self::BEETROOT_DATABASE, $sql);
 
         return $categories;
     }

@@ -23,7 +23,7 @@ class Model
         return $connection;
     }
 
-    protected function fetchData(string $sql, array $params = []): array
+    protected function fetchData(string $database = self::BEETROOT_DATABASE, string $sql, array $params = []): array
     {
         $connection = $this->getConnection(self::BEETROOT_DATABASE);
 
@@ -42,9 +42,9 @@ class Model
         return $data;
     }
 
-    protected function insertData(string $sql, array $params = []): bool
+    protected function insertData(string $databse = self::BEETROOT_DATABASE, string $sql, array $params = []): bool
     {
-        $connection = $this->getConnection(self::BEETROOT_DATABASE);
+        $connection = $this->getConnection($databse);
 
         $query = $connection->prepare($sql);
 

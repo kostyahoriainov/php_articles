@@ -12,7 +12,7 @@ class Comments extends Model
 
         $sql = "INSERT INTO comments (article_id, user_id, text) VALUES (:article_id, :user_id, :text)";
 
-        $result = $this->insertData($sql, $values);
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }
@@ -27,7 +27,7 @@ class Comments extends Model
                 LEFT JOIN users as u ON c.user_id = u.id
                 WHERE c.article_id = :id";
 
-        $result = $this->fetchData($sql, $values);
+        $result = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }

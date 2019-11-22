@@ -16,7 +16,7 @@ class Articles extends Model
             ':status' => self::STATUS_ACTIVE
         ];
 
-        $articles = $this->fetchData($sql, $values);
+        $articles = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $articles;
     }
@@ -33,7 +33,7 @@ class Articles extends Model
         $sql = "INSERT INTO articles (name, text, category_id, user_id) 
                 VALUES (:name, :text, :category_id, :user_id)";
 
-        $result = $this->insertData($sql, $values);
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }
@@ -49,7 +49,7 @@ class Articles extends Model
                 LEFT JOIN categories as c ON a.category_id = c.id 
                 WHERE a.user_id = :user_id AND a.status = :status";
 
-        $articles = $this->fetchData($sql, $values);
+        $articles = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $articles;
     }
@@ -62,7 +62,7 @@ class Articles extends Model
 
         $sql = "SELECT * FROM articles as a WHERE a.id = :id";
 
-        $article = $this->fetchData($sql, $values)[0];
+        $article = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values)[0];
 
         if (!$skipPermission && !$this->checkUserPermission($article['user_id'])) {
             echo 'PERMISSION DENIED';
@@ -89,7 +89,7 @@ class Articles extends Model
         $sql = "UPDATE articles SET status = :status WHERE id = :article_id;";
 
 
-        $result = $this->insertData($sql, $values);
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }
@@ -109,7 +109,7 @@ class Articles extends Model
                     category_id = :category_id 
                 WHERE id = :id";
 
-        $result = $this->insertData($sql, $values);
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $result;
     }
@@ -124,7 +124,7 @@ class Articles extends Model
                 LEFT JOIN categories as c ON a.category_id = c.id 
                 WHERE a.id = :id";
 
-        $article = $this->fetchData($sql, $values);
+        $article = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 
         if (empty($article)) {
             header('Location: /not-found');
