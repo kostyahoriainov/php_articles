@@ -49,6 +49,8 @@ services:
       - "MYSQL_USER=${MYSQL_DB_USER}"
       - "MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}"
       - "MYSQL_ROOT_PASSWORD=${MYSQL_DB_ROOT_PASSWORD}"
+    ports:
+      - 1113:3306
     networks:
       - internal
   phpmyadmin:

@@ -10,19 +10,21 @@ class RatingController extends Controller
 
         $article_id = $_REQUEST['article_id'];
 
-        $rating = (new Rating())->allById($article_id);
+        $rating_model = new Rating();
+
+        $all_rating = $rating_model->allById($article_id);
 
         $user_has_rated = false;
 
-        foreach ($rating as $item) {
+        foreach ($all_rating as $item) {
             if ($item['user_id'] == $user_id) {
                 $user_has_rated = true;
                 break;
             }
         }
         $result = $user_has_rated
-            ? (new Rating())->remove($user_id, $article_id)
-            : (new Rating())->add($user_id, $article_id);
+            ? $rating_model->remove($user_id, $article_id)
+            : $rating_model->add($user_id, $article_id);
 
         header('Location: /articles');
         die;
