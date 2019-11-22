@@ -23,12 +23,12 @@ class UsersController extends Controller
     {
         $request = $this->getRequest();
 
-        $this->checkRequestFields($request, '/?empty=1');
+        $this->checkRequestFields($request, '/?empty');
 
         $auth = (new Users())->authUser(trim($request['login']), trim($request['password']));
 
         if (!$auth) {
-            header('Location: /?auth-error=1');
+            header('Location: /?auth-error');
             die;
         }
 
@@ -55,11 +55,11 @@ class UsersController extends Controller
     {
         $request = $this->getRequest();
 
-        $this->checkRequestFields($request, '/user/sign-up?empty=1');
+        $this->checkRequestFields($request, '/user/sign-up?empty');
 
         $result = (new Users())->createNewUser($request);
         if (!$result) {
-            header('Location: /user/sign-up?error=1');
+            header('Location: /user/sign-up?error');
             die;
         }
 
