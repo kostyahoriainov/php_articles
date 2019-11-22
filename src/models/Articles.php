@@ -3,8 +3,8 @@
 class Articles extends Model
 {
 
-    const STATUS_ACTIVE = 0;
-    const STATUS_REMOVED = 1;
+    public const STATUS_ACTIVE = 0;
+    public const STATUS_REMOVED = 1;
 
     public function all(): array
     {
@@ -21,7 +21,7 @@ class Articles extends Model
         return $articles;
     }
 
-    public function add($request): bool
+    public function add(array $request): bool
     {
         $values = [
             ':name' => trim($request['name']),
