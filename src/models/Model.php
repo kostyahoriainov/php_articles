@@ -79,9 +79,4 @@ class Model
     {
         setcookie('OLDSESSION', session_id(), time() + 60 * 60 * 24, '/');
     }
-
-    private function formatDsn(string $database): string
-    {
-        return "";
-    }
 }
