@@ -1,0 +1,14 @@
+<div class="ui vertical fluid tabular menu">
+    <a class="<?= isset($side_location) && $side_location === 'all' ? 'active' : '' ?> item" href="/articles/user/all">
+        All
+    </a>
+    <a  class="<?= isset($side_location) && $side_location === 'active' ? 'active' : '' ?> item" href="/articles/user/active">
+        Active
+    </a>
+    <a  class="<?= isset($side_location) && $side_location === 'drafts' ? 'active' : '' ?> item" href="/articles/user/drafts">
+        Drafts
+    </a>
+    <a c class="<?= isset($side_location) && $side_location === 'removed' ? 'active' : '' ?> item" href="/articles/user/removed">
+        Removed
+    </a>
+</div>

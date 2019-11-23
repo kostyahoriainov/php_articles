@@ -10,6 +10,8 @@ class UsersController extends Controller
             die;
         }
 
+        (new UserTypes())->all();
+
         if (isset($_REQUEST['empty'])) {
             $empty = true;
         } elseif (isset($_REQUEST['auth-error'])) {

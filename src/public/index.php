@@ -7,12 +7,14 @@ require_once "../controllers/NotFoundController.php";
 require_once "../controllers/UsersController.php";
 require_once "../controllers/CommentsController.php";
 require_once "../controllers/RatingController.php";
+require_once "../controllers/AdminController.php";
 require_once "../models/Model.php";
 require_once "../models/Articles.php";
 require_once "../models/Categories.php";
 require_once "../models/Users.php";
 require_once "../models/Comments.php";
 require_once "../models/Rating.php";
+require_once "../models/UserTypes.php";
 require_once "../helpers/index.php";
 
 
@@ -55,8 +57,17 @@ switch ($uri) {
     case '/articles/remove':
         (new ArticlesController())->removeArticle();
         break;
-    case '/articles/user-articles':
-        (new ArticlesController())->showUserArticles();
+    case '/articles/user/all':
+        (new ArticlesController())->showAllUserArticles();
+        break;
+    case '/articles/user/active':
+        (new ArticlesController())->showActiveUserArticles();
+        break;
+    case '/articles/user/drafts':
+        (new ArticlesController())->showDraftsUserArticles();
+        break;
+    case '/articles/user/removed':
+        (new ArticlesController())->showRemovedUserArticles();
         break;
     case '/articles/detail':
         (new ArticlesController())->showDetailArticle();
@@ -70,9 +81,25 @@ switch ($uri) {
     case '/rating/toggle':
         (new RatingController())->changeRatingAction();
         break;
+    case '/admin/index':
+        (new AdminController())->indexAction();
+        break;
+    case '/admin/block/add':
+        (new AdminController())->addUserBlockAction();
+        break;
+    case '/admin/block/remove':
+        (new AdminController())->removeUserBlockAction();
+        break;
+    case '/admin/moderate/add':
+        (new AdminController())->addModerateUserAction();
+        break;
+    case '/admin/moderate/remove':
+        (new AdminController())->removeModerateUserAction();
+        break;
     case '/':
         (new UsersController())->indexAction();
         break;
+    case '/not-found':
     default:
         (new NotFoundController())->indexAction();
         break;

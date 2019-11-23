@@ -6,11 +6,13 @@ class ArticlesController extends Controller
     public function indexAction(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
 
-        $location = 'all';
         $user_id = (new Model())->getAuthUserId();
-        $articles = (new Articles())->all();
 
+        $auth_user = (new Users())->getUserById($user_id);
+
+        $articles = (new Articles())->all();
 
         foreach ($articles as $key => $article) {
             $articles[$key] = $this->getArticleRating($article, $user_id);
@@ -23,6 +25,10 @@ class ArticlesController extends Controller
     public function showNewArticleForm(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
+
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
 
         if (isset($_REQUEST['empty'])) {
             $empty = true;
@@ -36,12 +42,16 @@ class ArticlesController extends Controller
     public function addArticleAction(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
 
         $request = $this->getRequest();
 
-        $this->checkRequestFields($request, '/articles/add?empty=1');
+        $this->checkRequestFields($request, '/articles/add?empty');
+        $action = $request['action'];
 
-        $result = (new Articles())->add($request);
+        $result = $action === 'add'
+            ? (new Articles())->add($request)
+            : (new Articles())->draft($request);
 
         if ($result) {
             header('Location: /articles');
@@ -49,13 +59,69 @@ class ArticlesController extends Controller
         }
     }
 
-    public function showUserArticles(): void
+    public function showAllUserArticles(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
 
         $edit_on = true;
         $location = 'user';
-        $articles = (new Articles())->userArticles();
+        $side_location = 'all';
+        $articles = (new Articles())->allUserArticles();
+
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
+
+        require_once "../views/articles/index.phtml";
+        die;
+    }
+
+    public function showActiveUserArticles(): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        $edit_on = true;
+        $location = 'user';
+        $side_location = 'active';
+        $articles = (new Articles())->allUserArticlesByStatus(Articles::STATUS_ACTIVE);
+
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
+
+        require_once "../views/articles/index.phtml";
+        die;
+    }
+
+    public function showDraftsUserArticles(): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        $edit_on = true;
+        $location = 'user';
+        $side_location = 'drafts';
+        $articles = (new Articles())->allUserArticlesByStatus(Articles::STATUS_DRAFT);
+
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
+
+        require_once "../views/articles/index.phtml";
+        die;
+    }
+
+    public function showRemovedUserArticles(): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        $edit_on = true;
+        $location = 'user';
+        $side_location = 'removed';
+        $articles = (new Articles())->allUserArticlesByStatus(Articles::STATUS_REMOVED);
+
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
 
         require_once "../views/articles/index.phtml";
         die;
@@ -64,13 +130,14 @@ class ArticlesController extends Controller
     public function removeArticle(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
 
         $article_id = $_REQUEST['id'];
 
         $result = (new Articles())->remove($article_id);
 
         if ($result) {
-            header('Location: /articles/user-articles');
+            header('Location: /articles/user/all');
             die;
         }
     }
@@ -78,6 +145,7 @@ class ArticlesController extends Controller
     public function showEditArticle(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
 
         if (isset($_REQUEST['empty'])) {
             $empty = true;
@@ -88,6 +156,9 @@ class ArticlesController extends Controller
         $article = (new Articles())->articleById($article_id);
         $categories = (new Categories())->all();
 
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
+
         require_once "../views/articles/edit/index.phtml";
         die;
     }
@@ -95,15 +166,16 @@ class ArticlesController extends Controller
     public function editArticleAction(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
 
         $request = $this->getRequest();
 
-        $this->checkRequestFields($request, '/articles/edit?id=' . $request['id'] . '&empty=1');
+        $this->checkRequestFields($request, '/articles/edit?id=' . $request['id'] . '&empty');
 
         $result = (new Articles())->edit($request);
 
         if ($result) {
-            header('Location: /articles/user-articles');
+            header('Location: /articles/user/all');
             die;
         }
     }
@@ -111,12 +183,14 @@ class ArticlesController extends Controller
     public function showDetailArticle(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
 
         $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
 
         $id = $_REQUEST['id'];
 
-        $article = (new Articles())->getDetailArticle($id, true)[0];
+        $article = (new Articles())->getDetailArticle($id);
 
         if (isset($_REQUEST['empty'])) {
             $empty = true;

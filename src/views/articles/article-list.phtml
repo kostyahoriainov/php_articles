@@ -1,29 +1,59 @@
-<div class="ui two column centered grid" style="margin-top: 50px">
+<div class="ui divided items">
     <?php foreach ($articles as $key => $article): ?>
-        <div class="row">
-            <div class="ui card column">
-                <div class="content">
-                    <div class="header"><?= $article['name']; ?></div>
-                    <div class="meta"><?= ucfirst($article['category_name']); ?></div>
-                    <div class="description">
-                        <p>
-                            <?= $article['text']; ?>
-                        </p>
-                    </div>
+
+        <div class="item">
+            <div class="content">
+                <p class="header"><?= $article['name']; ?></p>
+
+                <?php if ($article['status'] == Articles::STATUS_DRAFT): ?>
+                    <label class="ui grey right ribbon label">Draft</label>
+                <?php elseif ($article['status'] == Articles::STATUS_REMOVED): ?>
+                    <label class="ui red right ribbon label">Removed</label>
+                <?php endif; ?>
+
+                <div class="meta">
+                    <span><?= ucfirst($article['category_name']); ?></span>
+                </div>
+                <div class="description">
+                    <p>
+                        <?= $article['text']; ?>
+                    </p>
                 </div>
                 <?php if (isset($edit_on)): ?>
-                <div class="extra content">
-                    <div class="ui two buttons">
-                        <a href="/articles/edit?id=<?= $article['id']; ?>"
-                           class="ui basic blue button">
-                            Edit
-                        </a>
-                        <a href="/articles/remove?id=<?= $article['id']; ?>"
-                           class="ui basic red button">
-                            Delete
-                        </a>
-                    </div>
-                </div>
+                    <?php if ($article['status'] == Articles::STATUS_ACTIVE): ?>
+                        <div class="extra content">
+                            <a href="/articles/edit?id=<?= $article['id']; ?>"
+                               class="ui basic blue button">
+                                Edit
+                            </a>
+                            <a href="/articles/remove?id=<?= $article['id']; ?>"
+                               class="ui basic red button">
+                                Delete
+                            </a>
+                        </div>
+                    <?php elseif ($article['status'] == Articles::STATUS_DRAFT): ?>
+                        <div class="extra content">
+                            <a href="/articles/edit?id=<?= $article['id']; ?>"
+                               class="ui basic green button">
+                                Add
+                            </a>
+                            <a href="/articles/edit?id=<?= $article['id']; ?>"
+                               class="ui basic blue button">
+                                Edit
+                            </a>
+                            <a href="/articles/remove?id=<?= $article['id']; ?>"
+                               class="ui basic red button">
+                                Delete
+                            </a>
+                        </div>
+                    <?php elseif ($article['status'] == Articles::STATUS_REMOVED): ?>
+                        <div class="extra content">
+                            <a href="/articles/edit?id=<?= $article['id']; ?>"
+                               class="ui basic green button">
+                                Restore
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 <?php else: ?>
                     <div class="extra">
                         <a href="/articles/detail?id=<?= $article['id']; ?>">
@@ -43,5 +73,5 @@
         </div>
     <?php endforeach; ?>
 
-    <a href="/articles/add" class="ui right floated button green" style="margin-top: 15px"> Add new Article</a>
+    <a href="/articles/add" class="ui left floated button green" style="margin-top: 15px"> Add new Article</a>
 </div>

@@ -5,6 +5,7 @@ class Articles extends Model
 
     public const STATUS_ACTIVE = 0;
     public const STATUS_REMOVED = 1;
+    public const STATUS_DRAFT = 2;
 
     public function all(): array
     {
@@ -38,11 +39,44 @@ class Articles extends Model
         return $result;
     }
 
-    public function userArticles(): array
+    public function draft(array $request): bool
+    {
+        $values = [
+            ':name' => trim($request['name']),
+            ':text' => trim($request['text']),
+            ':category_id' => trim($request['category_id']),
+            ':user_id' => $this->getAuthUserId(),
+            ':status' => Articles::STATUS_DRAFT
+        ];
+
+        $sql = "INSERT INTO articles (name, text, category_id, user_id, status) 
+                VALUES (:name, :text, :category_id, :user_id, :status)";
+
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
+
+        return $result;
+    }
+
+    public function allUserArticles(): array
+    {
+        $values = [
+            ':user_id' => $this->getAuthUserId()
+        ];
+
+        $sql = "SELECT a.*, c.name as category_name FROM articles as a 
+                LEFT JOIN categories as c ON a.category_id = c.id 
+                WHERE a.user_id = :user_id";
+
+        $articles = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
+
+        return $articles;
+    }
+
+    public function allUserArticlesByStatus(int $status): array
     {
         $values = [
             ':user_id' => $this->getAuthUserId(),
-            ':status' => self::STATUS_ACTIVE
+            ':status' => $status
         ];
 
         $sql = "SELECT a.*, c.name as category_name FROM articles as a 
@@ -131,7 +165,7 @@ class Articles extends Model
             die;
         }
 
-        return $article;
+        return $article[0];
     }
 
 }

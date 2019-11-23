@@ -31,4 +31,16 @@ class Controller
         }
     }
 
+    protected function checkBanned(array $user = []): void
+    {
+        if (empty($user)) {
+            $user_id = (new Model())->getAuthUserId();
+            $user = (new Users())->getUserById($user_id);
+        }
+        if ($user['banned'] == Users::USER_IS_BANNED) {
+            require_once "../views/banned/index.phtml";
+            die;
+        }
+    }
+
 }

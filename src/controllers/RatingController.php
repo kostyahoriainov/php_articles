@@ -5,6 +5,7 @@ class RatingController extends Controller
     public function changeRatingAction(): void
     {
         $this->checkAuth();
+        $this->checkBanned();
 
         $user_id = (new Model())->getAuthUserId();
 
