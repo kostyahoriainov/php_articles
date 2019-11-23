@@ -11,6 +11,12 @@
         </a>
     <?php endif; ?>
     <div class="right menu">
+        <label class="item">Hello,
+            <a href="/user/profile?id=<?= $auth_user['id']; ?>">
+                <?= $auth_user['first_name']; ?>
+                <?= $auth_user['last_name']; ?>
+            </a>
+        </label>
         <a href="/user/logout"
            class="ui item">
             Logout

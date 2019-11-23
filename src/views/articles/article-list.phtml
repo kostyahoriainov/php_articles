@@ -33,7 +33,7 @@
                         </div>
                     <?php elseif ($article['status'] == Articles::STATUS_DRAFT): ?>
                         <div class="extra content">
-                            <a href="/articles/edit?id=<?= $article['id']; ?>"
+                            <a href="/articles/restore?id=<?= $article['id']; ?>"
                                class="ui basic green button">
                                 Add
                             </a>
@@ -48,7 +48,7 @@
                         </div>
                     <?php elseif ($article['status'] == Articles::STATUS_REMOVED): ?>
                         <div class="extra content">
-                            <a href="/articles/edit?id=<?= $article['id']; ?>"
+                            <a href="/articles/restore?id=<?= $article['id']; ?>"
                                class="ui basic green button">
                                 Restore
                             </a>

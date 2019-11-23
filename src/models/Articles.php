@@ -57,32 +57,26 @@ class Articles extends Model
         return $result;
     }
 
-    public function allUserArticles(): array
+    public function userArticles(?int $status): array
     {
-        $values = [
-            ':user_id' => $this->getAuthUserId()
-        ];
+        if (isset($status)) {
+            $values = [
+                ':user_id' => $this->getAuthUserId(),
+                ':status' => $status
+            ];
 
-        $sql = "SELECT a.*, c.name as category_name FROM articles as a 
-                LEFT JOIN categories as c ON a.category_id = c.id 
-                WHERE a.user_id = :user_id";
-
-        $articles = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
-
-        return $articles;
-    }
-
-    public function allUserArticlesByStatus(int $status): array
-    {
-        $values = [
-            ':user_id' => $this->getAuthUserId(),
-            ':status' => $status
-        ];
-
-        $sql = "SELECT a.*, c.name as category_name FROM articles as a 
+            $sql = "SELECT a.*, c.name as category_name FROM articles as a 
                 LEFT JOIN categories as c ON a.category_id = c.id 
                 WHERE a.user_id = :user_id AND a.status = :status";
+        } else {
+            $values = [
+                ':user_id' => $this->getAuthUserId()
+            ];
 
+            $sql = "SELECT a.*, c.name as category_name FROM articles as a 
+                LEFT JOIN categories as c ON a.category_id = c.id 
+                WHERE a.user_id = :user_id";
+        }
         $articles = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 
         return $articles;
@@ -122,6 +116,21 @@ class Articles extends Model
 
         $sql = "UPDATE articles SET status = :status WHERE id = :article_id;";
 
+        $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
+
+        return $result;
+    }
+
+    public function restore(int $article_id): bool
+    {
+        $this->articleById($article_id);
+
+        $values = [
+            ':status' => self::STATUS_ACTIVE,
+            ':article_id' => $article_id
+        ];
+
+        $sql = "UPDATE articles SET status = :status WHERE id = :article_id;";
 
         $result = $this->insertData(self::BEETROOT_DATABASE, $sql, $values);
 
@@ -148,7 +157,7 @@ class Articles extends Model
         return $result;
     }
 
-    public function getDetailArticle(int $id): array
+    public function detailArticle(int $id): array
     {
         $values = [
             ':id' => $id

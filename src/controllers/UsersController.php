@@ -77,4 +77,27 @@ class UsersController extends Controller
         die;
     }
 
+    public function showUserProfileAction(): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        $users_model = new Users();
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = $users_model->getUserById($user_id);
+
+        $id = $_REQUEST['id'];
+
+        $user = $users_model->getUserById($id);
+
+        $user['comments'] = (new Comments())->getCommentById($id, 'user_id');
+        $user['articles'] = (new Articles())->userArticles(null);
+        $user['comments_cnt'] = count($user['comments']);
+        $user['articles_cnt'] = count($user['articles']);
+
+        var_dump($user);
+
+        require_once "../views/user/profile/index.phtml";
+    }
+
 }

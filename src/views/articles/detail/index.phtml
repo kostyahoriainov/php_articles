@@ -17,12 +17,13 @@
         <?php if(!empty($comments)): ?>
 
             <?php foreach ($comments as $comment): ?>
+
             <div class="comment">
                 <a class="avatar">
                     <img src="/images/img_placeholder_avatar.jpg">
                 </a>
                 <div class="content">
-                    <a class="author"><?= $comment['first_name'] ?> <?= $comment['last_name']; ?></a>
+                    <a href="/user/profile?id=<?= $comment['user_id']; ?>" class="author"><?= $comment['first_name'] ?> <?= $comment['last_name']; ?></a>
                     <div class="metadata">
                         <span class="date"><?= $comment['created_at']; ?></span>
                     </div>

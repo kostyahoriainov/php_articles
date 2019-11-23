@@ -17,7 +17,7 @@ class Comments extends Model
         return $result;
     }
 
-    public function getCommentById(int $id): array
+    public function getCommentById(int $id, string $field): array
     {
         $values = [
             ':id' => $id
@@ -25,7 +25,7 @@ class Comments extends Model
 
         $sql = "SELECT c.*, u.first_name, u.last_name FROM comments as c
                 LEFT JOIN users as u ON c.user_id = u.id
-                WHERE c.article_id = :id";
+                WHERE c.$field = :id";
 
         $result = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 

@@ -22,23 +22,6 @@ class ArticlesController extends Controller
         die;
     }
 
-    public function showNewArticleForm(): void
-    {
-        $this->checkAuth();
-        $this->checkBanned();
-
-        $user_id = (new Model())->getAuthUserId();
-        $auth_user = (new Users())->getUserById($user_id);
-
-        if (isset($_REQUEST['empty'])) {
-            $empty = true;
-        }
-
-        $categories = (new Categories())->all();
-
-        require_once "../views/articles/add/index.phtml";
-    }
-
     public function addArticleAction(): void
     {
         $this->checkAuth();
@@ -59,75 +42,7 @@ class ArticlesController extends Controller
         }
     }
 
-    public function showAllUserArticles(): void
-    {
-        $this->checkAuth();
-        $this->checkBanned();
-
-        $edit_on = true;
-        $location = 'user';
-        $side_location = 'all';
-        $articles = (new Articles())->allUserArticles();
-
-        $user_id = (new Model())->getAuthUserId();
-        $auth_user = (new Users())->getUserById($user_id);
-
-        require_once "../views/articles/index.phtml";
-        die;
-    }
-
-    public function showActiveUserArticles(): void
-    {
-        $this->checkAuth();
-        $this->checkBanned();
-
-        $edit_on = true;
-        $location = 'user';
-        $side_location = 'active';
-        $articles = (new Articles())->allUserArticlesByStatus(Articles::STATUS_ACTIVE);
-
-        $user_id = (new Model())->getAuthUserId();
-        $auth_user = (new Users())->getUserById($user_id);
-
-        require_once "../views/articles/index.phtml";
-        die;
-    }
-
-    public function showDraftsUserArticles(): void
-    {
-        $this->checkAuth();
-        $this->checkBanned();
-
-        $edit_on = true;
-        $location = 'user';
-        $side_location = 'drafts';
-        $articles = (new Articles())->allUserArticlesByStatus(Articles::STATUS_DRAFT);
-
-        $user_id = (new Model())->getAuthUserId();
-        $auth_user = (new Users())->getUserById($user_id);
-
-        require_once "../views/articles/index.phtml";
-        die;
-    }
-
-    public function showRemovedUserArticles(): void
-    {
-        $this->checkAuth();
-        $this->checkBanned();
-
-        $edit_on = true;
-        $location = 'user';
-        $side_location = 'removed';
-        $articles = (new Articles())->allUserArticlesByStatus(Articles::STATUS_REMOVED);
-
-        $user_id = (new Model())->getAuthUserId();
-        $auth_user = (new Users())->getUserById($user_id);
-
-        require_once "../views/articles/index.phtml";
-        die;
-    }
-
-    public function removeArticle(): void
+    public function removeArticleAction(): void
     {
         $this->checkAuth();
         $this->checkBanned();
@@ -140,6 +55,86 @@ class ArticlesController extends Controller
             header('Location: /articles/user/all');
             die;
         }
+    }
+
+    public function restoreArticleAction(): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        $article_id = $_REQUEST['id'];
+
+        $result = (new Articles())->restore($article_id);
+
+        if ($result) {
+            header('Location: /articles/user/all');
+            die;
+        }
+    }
+
+    public function editArticleAction(): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        $request = $this->getRequest();
+
+        $this->checkRequestFields($request, '/articles/edit?id=' . $request['id'] . '&empty');
+
+        $result = (new Articles())->edit($request);
+
+        if ($result) {
+            header('Location: /articles/user/all');
+            die;
+        }
+    }
+
+    public function showNewArticleForm(): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
+
+        if (isset($_REQUEST['empty'])) {
+            $empty = true;
+        }
+
+        $categories = (new Categories())->all();
+
+        require_once "../views/articles/add/index.phtml";
+    }
+
+    public function showUserArticles(?int $status = null): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        switch (true){
+            case $status === Articles::STATUS_ACTIVE:
+                $side_location = 'active';
+                break;
+            case $status === Articles::STATUS_REMOVED:
+                $side_location = 'removed';
+                break;
+            case $status === Articles::STATUS_DRAFT:
+                $side_location = 'draft';
+                break;
+            default:
+                $side_location = 'all';
+                break;
+        }
+
+        $edit_on = true;
+        $location = 'user';
+        $articles = (new Articles())->userArticles($status);
+
+        $user_id = (new Model())->getAuthUserId();
+        $auth_user = (new Users())->getUserById($user_id);
+
+        require_once "../views/articles/index.phtml";
+        die;
     }
 
     public function showEditArticle(): void
@@ -163,23 +158,6 @@ class ArticlesController extends Controller
         die;
     }
 
-    public function editArticleAction(): void
-    {
-        $this->checkAuth();
-        $this->checkBanned();
-
-        $request = $this->getRequest();
-
-        $this->checkRequestFields($request, '/articles/edit?id=' . $request['id'] . '&empty');
-
-        $result = (new Articles())->edit($request);
-
-        if ($result) {
-            header('Location: /articles/user/all');
-            die;
-        }
-    }
-
     public function showDetailArticle(): void
     {
         $this->checkAuth();
@@ -190,7 +168,7 @@ class ArticlesController extends Controller
 
         $id = $_REQUEST['id'];
 
-        $article = (new Articles())->getDetailArticle($id);
+        $article = (new Articles())->detailArticle($id);
 
         if (isset($_REQUEST['empty'])) {
             $empty = true;
@@ -198,7 +176,7 @@ class ArticlesController extends Controller
 
         $article = $this->getArticleRating($article, $user_id);
 
-        $comments = (new Comments())->getCommentById($id);
+        $comments = (new Comments())->getCommentById($id, 'article_id');
 
         require_once "../views/articles/detail/index.phtml";
         die;

@@ -42,6 +42,9 @@ switch ($uri) {
     case '/user/logout':
         (new UsersController())->logoutAction();
         break;
+    case '/user/profile':
+        (new UsersController())->showUserProfileAction();
+        break;
     case '/articles/add/action':
         (new ArticlesController())->addArticleAction();
         break;
@@ -55,19 +58,22 @@ switch ($uri) {
         (new ArticlesController())->showEditArticle();
         break;
     case '/articles/remove':
-        (new ArticlesController())->removeArticle();
+        (new ArticlesController())->removeArticleAction();
+        break;
+    case '/articles/restore':
+        (new ArticlesController())->restoreArticleAction();
         break;
     case '/articles/user/all':
-        (new ArticlesController())->showAllUserArticles();
+        (new ArticlesController())->showUserArticles();
         break;
     case '/articles/user/active':
-        (new ArticlesController())->showActiveUserArticles();
+        (new ArticlesController())->showUserArticles(Articles::STATUS_ACTIVE);
         break;
     case '/articles/user/drafts':
-        (new ArticlesController())->showDraftsUserArticles();
+        (new ArticlesController())->showUserArticles(Articles::STATUS_DRAFT);
         break;
     case '/articles/user/removed':
-        (new ArticlesController())->showRemovedUserArticles();
+        (new ArticlesController())->showUserArticles(Articles::STATUS_REMOVED);
         break;
     case '/articles/detail':
         (new ArticlesController())->showDetailArticle();
