@@ -91,11 +91,9 @@ class UsersController extends Controller
         $user = $users_model->getUserById($id);
 
         $user['comments'] = (new Comments())->getCommentById($id, 'user_id');
-        $user['articles'] = (new Articles())->userArticles(null);
+        $user['articles'] = (new Articles())->userArticles(null, $id);
         $user['comments_cnt'] = count($user['comments']);
-        $user['articles_cnt'] = count($user['articles']);
-
-        var_dump($user);
+        $user['articles_cnt'] = count($user['articles']);;
 
         require_once "../views/user/profile/index.phtml";
     }

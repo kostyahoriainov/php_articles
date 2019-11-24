@@ -84,6 +84,9 @@ switch ($uri) {
     case '/comments/add':
         (new CommentsController())->addCommentAction();
         break;
+    case '/comments/remove':
+        (new AdminController())->removeCommentAction();
+        break;
     case '/rating/toggle':
         (new RatingController())->changeRatingAction();
         break;

@@ -128,7 +128,7 @@ class ArticlesController extends Controller
 
         $edit_on = true;
         $location = 'user';
-        $articles = (new Articles())->userArticles($status);
+        $articles = (new Articles())->userArticles($status, null);
 
         $user_id = (new Model())->getAuthUserId();
         $auth_user = (new Users())->getUserById($user_id);

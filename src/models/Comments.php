@@ -2,6 +2,10 @@
 
 class Comments extends Model
 {
+
+    public const STATUS_ACTIVE = 0;
+    public const STATUS_REMOVED = 1;
+
     public function add(array $request): bool
     {
         $values = [
@@ -17,15 +21,30 @@ class Comments extends Model
         return $result;
     }
 
+    public function remove(int $comment_id): array
+    {
+        $values = [
+            ':id' => $comment_id,
+            ':status' => self::STATUS_REMOVED
+        ];
+
+        $sql = "UPDATE comments SET status = :status WHERE id = :id";
+
+        $result = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
+
+        return $result;
+    }
+
     public function getCommentById(int $id, string $field): array
     {
         $values = [
-            ':id' => $id
+            ':id' => $id,
+            ':status' => self::STATUS_ACTIVE
         ];
 
         $sql = "SELECT c.*, u.first_name, u.last_name FROM comments as c
                 LEFT JOIN users as u ON c.user_id = u.id
-                WHERE c.$field = :id";
+                WHERE c.$field = :id AND c.status = :status";
 
         $result = $this->fetchData(self::BEETROOT_DATABASE, $sql, $values);
 

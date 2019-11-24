@@ -65,6 +65,19 @@ class AdminController extends Controller
         header('Location: /admin/index');
     }
 
+    public function removeCommentAction(): bool
+    {
+        $this->checkAuth();
+        $this->checkAdminPermission();
+
+        $comment_id = $_REQUEST['comment-id'];
+        $article_id = $_REQUEST['article-id'];
+
+        $result = (new Comments())->remove($comment_id);
+
+        header("Location: /articles/detail?id=$article_id" );
+    }
+
     protected function checkAdminPermission(): void
     {
         $admin_user_id = (new Model())->getAuthUserId();

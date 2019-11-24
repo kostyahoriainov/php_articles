@@ -30,6 +30,12 @@
                     <div class="text">
                         <?= $comment['text']; ?>
                     </div>
+
+                    <?php if(in_array($auth_user['user_type_id'], UserTypes::ADMINISTRATION)): ?>
+                        <div class="actions">
+                            <a href="/comments/remove?comment-id=<?= $comment['id']; ?>&article-id=<?= $article['id']; ?>" class="reply">Remove</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <?php endforeach; ?>

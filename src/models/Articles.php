@@ -57,11 +57,11 @@ class Articles extends Model
         return $result;
     }
 
-    public function userArticles(?int $status): array
+    public function userArticles(?int $status, ?int $user_id): array
     {
         if (isset($status)) {
             $values = [
-                ':user_id' => $this->getAuthUserId(),
+                ':user_id' => $user_id ?? $this->getAuthUserId(),
                 ':status' => $status
             ];
 
@@ -70,7 +70,7 @@ class Articles extends Model
                 WHERE a.user_id = :user_id AND a.status = :status";
         } else {
             $values = [
-                ':user_id' => $this->getAuthUserId()
+                ':user_id' => $user_id ?? $this->getAuthUserId()
             ];
 
             $sql = "SELECT a.*, c.name as category_name FROM articles as a 
