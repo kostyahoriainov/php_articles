@@ -8,6 +8,7 @@ class ArticlesController extends Controller
         $this->checkAuth();
         $this->checkBanned();
 
+        $location = 'all';
         $user_id = (new Model())->getAuthUserId();
 
         $auth_user = (new Users())->getUserById($user_id);
@@ -119,7 +120,7 @@ class ArticlesController extends Controller
                 $side_location = 'removed';
                 break;
             case $status === Articles::STATUS_DRAFT:
-                $side_location = 'draft';
+                $side_location = 'drafts';
                 break;
             default:
                 $side_location = 'all';

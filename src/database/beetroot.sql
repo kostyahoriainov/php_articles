@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: mysql:3306
--- Время создания: Ноя 21 2019 г., 18:33
+-- Время создания: Ноя 24 2019 г., 11:22
 -- Версия сервера: 5.7.28
 -- Версия PHP: 7.2.23
 
@@ -73,19 +73,10 @@ CREATE TABLE `comments` (
                             `article_id` int(11) NOT NULL,
                             `user_id` int(11) NOT NULL,
                             `text` varchar(255) CHARACTER SET utf8 NOT NULL,
-                            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+                            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                            `status` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `test`
---
-
-CREATE TABLE `test` (
-    `id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -100,7 +91,9 @@ CREATE TABLE `users` (
                          `email` varchar(64) CHARACTER SET utf8 NOT NULL,
                          `login` varchar(32) CHARACTER SET utf8 NOT NULL,
                          `password` varchar(32) CHARACTER SET utf8 NOT NULL,
-                         `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+                         `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         `user_type_id` int(1) NOT NULL DEFAULT '1',
+                         `banned` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -116,6 +109,26 @@ CREATE TABLE `user_article_rating` (
                                        `article_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `user_type`
+--
+
+CREATE TABLE `user_type` (
+                             `id` int(1) NOT NULL,
+                             `type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `user_type`
+--
+
+INSERT INTO `user_type` (`id`, `type`) VALUES
+(1, 'user'),
+(2, 'admin'),
+(3, 'moderator');
 
 --
 -- Индексы сохранённых таблиц
@@ -148,7 +161,8 @@ ALTER TABLE `comments`
 --
 ALTER TABLE `users`
     ADD PRIMARY KEY (`id`),
-    ADD UNIQUE KEY `login` (`login`);
+    ADD UNIQUE KEY `login` (`login`),
+    ADD KEY `user_type_id` (`user_type_id`);
 
 --
 -- Индексы таблицы `user_article_rating`
@@ -157,6 +171,12 @@ ALTER TABLE `user_article_rating`
     ADD PRIMARY KEY (`id`),
     ADD KEY `user_article_rating_ibfk_1` (`article_id`),
     ADD KEY `user_article_rating_ibfk_2` (`user_id`);
+
+--
+-- Индексы таблицы `user_type`
+--
+ALTER TABLE `user_type`
+    ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -172,7 +192,7 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `comments`
@@ -193,6 +213,12 @@ ALTER TABLE `user_article_rating`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
+-- AUTO_INCREMENT для таблицы `user_type`
+--
+ALTER TABLE `user_type`
+    MODIFY `id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- Ограничения внешнего ключа сохраненных таблиц
 --
 
@@ -209,6 +235,12 @@ ALTER TABLE `articles`
 ALTER TABLE `comments`
     ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE,
     ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `users`
+--
+ALTER TABLE `users`
+    ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_type_id`) REFERENCES `user_type` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `user_article_rating`

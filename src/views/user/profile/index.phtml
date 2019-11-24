@@ -20,7 +20,7 @@
 
         <p>Total comments: <?= $user['comments_cnt']; ?></p>
         <?php if(in_array($auth_user['user_type_id'], UserTypes::ADMINISTRATION)): ?>
-            <p  >Admin actions:
+            <p >Admin actions:
                 <?php if($user['user_type_id'] != UserTypes::TYPE_ADMIN && $user['banned'] == Users::USER_NOT_BANNED): ?>
                     <a href="/admin/block/add?user_id=<?= $user['id']; ?>&profile" title="Block user">
                         <i class="ban red icon"></i>
@@ -32,30 +32,33 @@
                 <?php endif; ?>
             </p>
 
-
-            <div class="ui list">
-                <p>User comments:</p>
-                <?php foreach ($user['comments'] as $comment): ?>
-                    <div class="item">
-                        <div class="content">
-                            <p class="header"><?= $comment['text']; ?></p>
-                            <div class="description"><?= (new DateTime($user['created_at']))->format('jS F Y'); ?></div>
+            <?php if($user['comments_cnt'] > 0): ?>
+                <div class="ui list">
+                    <p>User comments:</p>
+                    <?php foreach ($user['comments'] as $comment): ?>
+                        <div class="item">
+                            <div class="content">
+                                <p class="header"><?= $comment['text']; ?></p>
+                                <div class="description"><?= (new DateTime($user['created_at']))->format('jS F Y'); ?></div>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
 
-            <div class="ui list">
-                <p>User articles:</p>
-                <?php foreach ($user['articles'] as $article): ?>
-                    <div class="item">
-                        <div class="content">
-                            <p class="header"><?= $article['name']; ?></p>
-                            <div class="description"><?= (new DateTime($user['created_at']))->format('jS F Y'); ?></div>
+            <?php if($user['articles_cnt'] > 0): ?>
+                <div class="ui list">
+                    <p>User articles:</p>
+                    <?php foreach ($user['articles'] as $article): ?>
+                        <div class="item">
+                            <div class="content">
+                                <p class="header"><?= $article['name']; ?></p>
+                                <div class="description"><?= (new DateTime($user['created_at']))->format('jS F Y'); ?></div>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
     <div class="four wide column"></div>
