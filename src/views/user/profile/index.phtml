@@ -5,46 +5,48 @@
 
 <?php include_once "../views/articles/menu.phtml"; ?>
 
-<div>
-    <h4 class="ui header">Login: <?= $user['login']; ?></h4>
+<div class="ui grid">
+    <div class="four wide column"></div>
+    <div class="eight wide column">
+        <p>Login: <?= $user['login']; ?></p>
 
-    <h4 class="headers">Full name: <?= $user['first_name']; ?> <?= $user['last_name']; ?></h4>
+        <p>Full name: <?= $user['first_name']; ?> <?= $user['last_name']; ?></p>
 
-    <h4 class="headers">Email: <?= $user['email']; ?></h4>
+        <p>Email: <?= $user['email']; ?></p>
 
-    <h4 class="headers">User created: <?= (new DateTime($user['created_at']))->format('jS F Y'); ?></h4>
+        <p>User created: <?= (new DateTime($user['created_at']))->format('jS F Y'); ?></p>
 
-    <h4 class="headers">Total articles: <?= $user['articles_cnt']; ?></h4>
+        <p>Total articles: <?= $user['articles_cnt']; ?></p>
 
-    <h4 class="headers">Total comments: <?= $user['comments_cnt']; ?></h4>
+        <p>Total comments: <?= $user['comments_cnt']; ?></p>
         <?php if(in_array($auth_user['user_type_id'], UserTypes::ADMINISTRATION)): ?>
-            <h4 class="headers">Admin actions:
+            <p  >Admin actions:
                 <?php if($user['user_type_id'] != UserTypes::TYPE_ADMIN && $user['banned'] == Users::USER_NOT_BANNED): ?>
-                    <a href="/admin/block/add?user_id=<?= $user['id']; ?>" title="Block user">
+                    <a href="/admin/block/add?user_id=<?= $user['id']; ?>&profile" title="Block user">
                         <i class="ban red icon"></i>
                     </a>
                 <?php elseif($user['banned'] == Users::USER_IS_BANNED): ?>
-                    <a href="/admin/block/remove?user_id=<?= $user['id']; ?>" title="Unblock user">
+                    <a href="/admin/block/remove?user_id=<?= $user['id']; ?>&profile" title="Unblock user">
                         <i class="unlock green icon"></i>
                     </a>
                 <?php endif; ?>
-            </h4>
+            </p>
 
 
             <div class="ui list">
-                <h4 class="headers">User comments:</h4>
+                <p>User comments:</p>
                 <?php foreach ($user['comments'] as $comment): ?>
-                <div class="item">
-                    <div class="content">
-                        <p class="header"><?= $comment['text']; ?></p>
-                        <div class="description"><?= (new DateTime($user['created_at']))->format('jS F Y'); ?></div>
+                    <div class="item">
+                        <div class="content">
+                            <p class="header"><?= $comment['text']; ?></p>
+                            <div class="description"><?= (new DateTime($user['created_at']))->format('jS F Y'); ?></div>
+                        </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             </div>
 
             <div class="ui list">
-                <h4 class="headers">User articles:</h4>
+                <p>User articles:</p>
                 <?php foreach ($user['articles'] as $article): ?>
                     <div class="item">
                         <div class="content">
@@ -54,8 +56,11 @@
                     </div>
                 <?php endforeach; ?>
             </div>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
+    <div class="four wide column"></div>
 </div>
+
 
 </body>
 </html>

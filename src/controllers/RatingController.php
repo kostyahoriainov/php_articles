@@ -10,6 +10,7 @@ class RatingController extends Controller
         $user_id = (new Model())->getAuthUserId();
 
         $article_id = $_REQUEST['article_id'];
+        $is_article = isset($_REQUEST['article']);
 
         $rating_model = new Rating();
 
@@ -27,7 +28,9 @@ class RatingController extends Controller
             ? $rating_model->remove($user_id, $article_id)
             : $rating_model->add($user_id, $article_id);
 
-        header('Location: /articles');
+        $is_article
+            ? header("Location: /articles/detail?id=$article_id")
+            : header('Location: /articles');
         die;
     }
 }

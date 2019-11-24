@@ -23,10 +23,14 @@ class AdminController extends Controller
         $this->checkAdminPermission();
 
         $user_id = $_REQUEST['user_id'];
+        $is_profile = isset($_REQUEST['profile']);
 
         $result = (new Users())->addBlockUser($user_id);
 
-        header('Location: /admin/index');
+        $is_profile
+            ? header("Location: /user/profile?id=$user_id")
+            : header('Location: /admin/index');
+        die;
     }
 
     public function removeUserBlockAction(): void
@@ -35,10 +39,14 @@ class AdminController extends Controller
         $this->checkAdminPermission();
 
         $user_id = $_REQUEST['user_id'];
+        $is_profile = isset($_REQUEST['profile']);
 
         $result = (new Users())->removeBlockUser($user_id);
 
-        header('Location: /admin/index');
+        $is_profile
+            ? header("Location: /user/profile?id=$user_id")
+            : header('Location: /admin/index');
+        die;
     }
 
     public function addModerateUserAction(): void

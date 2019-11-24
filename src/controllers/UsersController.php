@@ -91,7 +91,7 @@ class UsersController extends Controller
         $user = $users_model->getUserById($id);
 
         $user['comments'] = (new Comments())->getCommentById($id, 'user_id');
-        $user['articles'] = (new Articles())->userArticles(null, $id);
+        $user['articles'] = (new Articles())->userArticles(Articles::STATUS_ACTIVE, $id);
         $user['comments_cnt'] = count($user['comments']);
         $user['articles_cnt'] = count($user['articles']);;
 

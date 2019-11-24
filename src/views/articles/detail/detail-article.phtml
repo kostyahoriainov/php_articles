@@ -11,7 +11,7 @@
         </div>
         <div class="extra">
             <span>
-                <a href="/rating/toggle?article_id=<?= $article['id']; ?>">
+                <a href="/rating/toggle?article_id=<?= $article['id']; ?>&article">
                     <i class="heart <?= $article['user_has_rated'] ? 'red' : 'outline'  ?> like icon"></i>
                 </a>
                 <?= $article['rating_cnt'] ?>
