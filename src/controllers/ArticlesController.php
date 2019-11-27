@@ -53,7 +53,7 @@ class ArticlesController extends Controller
         $result = (new Articles())->remove($article_id);
 
         if ($result) {
-            header('Location: /articles/user/all');
+            header('Location: /articles/user');
             die;
         }
     }
@@ -68,7 +68,7 @@ class ArticlesController extends Controller
         $result = (new Articles())->restore($article_id);
 
         if ($result) {
-            header('Location: /articles/user/all');
+            header('Location: /articles/user');
             die;
         }
     }
@@ -85,7 +85,7 @@ class ArticlesController extends Controller
         $result = (new Articles())->edit($request);
 
         if ($result) {
-            header('Location: /articles/user/all');
+            header('Location: /articles/user');
             die;
         }
     }

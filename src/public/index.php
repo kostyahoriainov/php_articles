@@ -8,6 +8,7 @@ require_once "../controllers/UsersController.php";
 require_once "../controllers/CommentsController.php";
 require_once "../controllers/RatingController.php";
 require_once "../controllers/AdminController.php";
+require_once "../controllers/ApiController.php";
 require_once "../models/Model.php";
 require_once "../models/Articles.php";
 require_once "../models/Categories.php";
@@ -63,7 +64,7 @@ switch ($uri) {
     case '/articles/restore':
         (new ArticlesController())->restoreArticleAction();
         break;
-    case '/articles/user/all':
+    case '/articles/user':
         (new ArticlesController())->showUserArticles();
         break;
     case '/articles/user/active':
@@ -104,6 +105,9 @@ switch ($uri) {
         break;
     case '/admin/moderate/remove':
         (new AdminController())->removeModerateUserAction();
+        break;
+    case '/api/articles':
+        (new ApiController())->getArticles();
         break;
     case '/':
         (new UsersController())->indexAction();

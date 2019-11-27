@@ -20,4 +20,7 @@ RUN apt-get update && apt-get install -y wget git unzip \
     && pecl install xdebug-2.7.1 \
     && docker-php-ext-enable xdebug
 
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN apt install nodejs -y
+RUN npm i -g npm
 

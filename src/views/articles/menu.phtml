@@ -2,7 +2,7 @@
     <a class="<?= isset($location) && $location === 'all' ? 'active' : '' ?> item" href="/articles">
         Home
     </a>
-    <a class="<?= isset($location) && $location === 'user' ? 'active' : '' ?> item" href="/articles/user/all">
+    <a class="<?= isset($location) && $location === 'user' ? 'active' : '' ?> item" href="/articles/user">
         My Articles
     </a>
     <?php if(in_array($auth_user['user_type_id'], UserTypes::ADMINISTRATION)): ?>
