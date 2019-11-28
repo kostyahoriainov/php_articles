@@ -1,6 +1,6 @@
 <template>
     <div class="ui vertical fluid tabular menu">
-        <router-link active-class="active" class="item" to="/articles/user" exact>
+        <router-link active-class="active" class="item" to="/articles/user/all">
             All
         </router-link>
         <router-link active-class="active" class="item" to="/articles/user/active">

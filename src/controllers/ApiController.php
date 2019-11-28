@@ -37,4 +37,15 @@ class ApiController extends Controller
         die;
     }
 
+    public function getCategories(): void
+    {
+        $this->checkAuth();
+        $this->checkBanned();
+
+        $categories = (new Categories())->all();
+
+        echo json_encode($categories);
+        die;
+    }
+
 }

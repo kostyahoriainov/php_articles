@@ -7,14 +7,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         articles: [],
-        loading: false
+        loading: false,
+        categories: []
     },
     mutations: {
         SET_ARTICLES: (state, payload) => {
             state.loading = false;
             state.articles = payload;
         },
-        LOAD_ARTICLES: (state, payload) => {
+        LOADING_ARTICLES: (state, payload) => {
             state.loading = payload;
         },
         REMOVE_ARTICLE: (state, payload) => {
@@ -23,10 +24,17 @@ export default new Vuex.Store({
         RESTORE_ARTICLE: (state, payload) => {
             state.articles = payload;
         },
+        FETCH_CATEGORIES: (state, payload) => {
+            state.categories = payload;
+        }
     },
     actions: {
-        FETCH_ARTICLES: (context) => {
-            context.commit('LOAD_ARTICLES', true);
+        FETCH_ARTICLES: (context, skipCache = false) => {
+            if (context.state.articles.length || skipCache) {
+                return;
+            }
+
+            context.commit('LOADING_ARTICLES', true);
             return axios.get('/api/articles')
                 .then(res => context.commit('SET_ARTICLES', res.data));
         },
@@ -49,12 +57,20 @@ export default new Vuex.Store({
                     $.unblockUI();
                     context.commit('RESTORE_ARTICLE', data);
                 });
+        },
+        FETCH_CATEGORIES: (context) => {
+            return axios.get('/api/categories')
+                .then(({ data }) => {
+                    console.log(data);
+                    context.commit("FETCH_CATEGORIES", data)
+                })
         }
     },
     modules: {
     },
     getters: {
         articles: state => state.articles,
-        loading: state => state.loading
+        loading: state => state.loading,
+        categories: state => state.categories
     }
 })

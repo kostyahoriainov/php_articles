@@ -23,10 +23,10 @@
                 </div>
 
                 <div v-if="Number(article.status) === STATUS_ACTIVE" class="extra content">
-                    <a :href="'/articles/edit?id=' + article.id"
+                    <router-link :to="{name: 'article-edit', params: {id: article.id}}"
                        class="ui basic blue button">
                         Edit
-                    </a>
+                    </router-link>
                     <a v-on:click="removeArticle(article.id, index)"
                        class="ui basic red button">
                         Delete
@@ -38,10 +38,10 @@
                        class="ui basic green button">
                         Add
                     </a>
-                    <a :href="'/articles/edit?id=' + article.id"
+                    <router-link :to="{name: 'article-edit', params: {id: article.id}}"
                        class="ui basic blue button">
                         Edit
-                    </a>
+                    </router-link>
                     <a  v-on:click="removeArticle(article.id, index)"
                        class="ui basic red button">
                         Delete

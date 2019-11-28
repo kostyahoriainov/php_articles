@@ -64,7 +64,7 @@ switch ($uri) {
     case '/articles/restore':
         (new ArticlesController())->restoreArticleAction();
         break;
-    case '/articles/user':
+    case '/articles/user/all':
         (new ArticlesController())->showUserArticles();
         break;
     case '/articles/user/active':
@@ -114,6 +114,9 @@ switch ($uri) {
         break;
     case '/api/articles/restore':
         (new ApiController())->restoreArticle();
+        break;
+    case '/api/categories':
+        (new ApiController())->getCategories();
         break;
     case '/':
         (new UsersController())->indexAction();
