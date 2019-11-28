@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="ui card column">
+        <div class="content">
+            <div class="header"><?= $article['name']; ?></div>
+            <div class="meta"><?= ucfirst($article['category_name']); ?></div>
+            <div class="description">
+                <p>
+                    <?= $article['text']; ?>
+                </p>
+            </div>
+        </div>
+        <div class="extra">
+            <span>
+                <a href="/rating/toggle?article_id=<?= $article['id']; ?>&article">
+                    <i class="heart <?= $article['user_has_rated'] ? 'red' : 'outline'  ?> like icon"></i>
+                </a>
+                <?= $article['rating_cnt'] ?>
+                likes
+            </span>
+        </div>
+    </div>
+</div>

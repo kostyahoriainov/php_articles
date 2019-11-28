@@ -1,0 +1,49 @@
+<form class="ui form <?= isset($empty) || isset($auth_error) ? 'error' : '' ?>"
+      method="post"
+      action="/user/login">
+    <h4 class="ui dividing header">Login</h4>
+
+    <?php if (isset($empty)): ?>
+    <div class="ui error message">
+        <div class="header">
+            There were some errors with your submission
+        </div>
+            <p>You must fulfill all fields.</p>
+    </div>
+    <?php endif; ?>
+
+    <?php if (isset($auth_error)): ?>
+        <div class="ui error message">
+            <div class="header">
+                Wrong login or password
+            </div>
+        </div>
+    <?php endif;?>
+
+    <div class="field">
+        <label for="login">Your login</label>
+        <input type="text"
+               id="login"
+               name="login"
+               placeholder="Your login">
+    </div>
+    <div class="field">
+        <label id="password">Your password</label>
+        <input type="password"
+               id="password"
+               name="password"
+               placeholder="Password">
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox"
+                   id="remember"
+                   name="remember">
+            <label for="remember">Remember me on this computer</label>
+        </div>
+    </div>
+    <p>
+        Don't have an account? <a href="/user/sign-up">Register</a>
+    </p>
+    <button class="ui right floated button green" type="submit">Login</button>
+</form>

@@ -1,0 +1,60 @@
+<table class="ui striped table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Date Joined</th>
+        <th>E-mail</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($all_users as $user): ?>
+    <tr class="<?= $user['banned'] == Users::USER_IS_BANNED ? 'negative' : '' ?>">
+
+        <td>
+            <a href="/user/profile?id=<?= $user['id']; ?>">
+                <?= $user['first_name']; ?>
+                <?= $user['last_name']; ?>
+            </a>
+        </td>
+
+        <td>
+            <?= (new DateTime($user['created_at']))->format('jS F Y') ?>
+        </td>
+
+        <td>
+            <?= $user['email']; ?>
+        </td>
+
+        <td>
+            <?php if (!in_array($user['user_type_id'], UserTypes::ADMINISTRATION)): ?>
+
+                <?php if($user['user_type_id'] != UserTypes::TYPE_ADMIN && $user['banned'] == Users::USER_NOT_BANNED): ?>
+                    <a href="/admin/block/add?user_id=<?= $user['id']; ?>" title="Block user">
+                        <i class="ban red icon"></i>
+                    </a>
+                <?php elseif($user['banned'] == Users::USER_IS_BANNED): ?>
+                    <a href="/admin/block/remove?user_id=<?= $user['id']; ?>" title="Unblock user">
+                        <i class="unlock green icon"></i>
+                    </a>
+                <?php endif; ?>
+
+            <?php endif; ?>
+
+            <?php if($auth_user['user_type_id'] == UserTypes::TYPE_ADMIN): ?>
+                <?php if($user['user_type_id'] == UserTypes::TYPE_USER): ?>
+                    <a href="/admin/moderate/add?user_id=<?= $user['id']; ?>" title="Make a moderator">
+                        <i class="user plus icon"></i>
+                    </a>
+                <?php elseif ($user['user_type_id'] == UserTypes::TYPE_MODERATOR): ?>
+                    <a href="/admin/moderate/remove?user_id=<?= $user['id']; ?>" title="Remove a moderator">
+                        <i class="user red times icon"></i>
+                    </a>
+                <?php endif; ?>
+            <?php endif; ?>
+
+        </td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

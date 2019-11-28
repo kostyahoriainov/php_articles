@@ -1,0 +1,25 @@
+<div class="ui secondary pointing menu">
+    <a class="<?= isset($location) && $location === 'all' ? 'active' : '' ?> item" href="/articles">
+        Home
+    </a>
+    <a class="<?= isset($location) && $location === 'user' ? 'active' : '' ?> item" href="/articles/user/all">
+        My Articles
+    </a>
+    <?php if(in_array($auth_user['user_type_id'], UserTypes::ADMINISTRATION)): ?>
+        <a class="<?= isset($location) && $location === 'admin' ? 'active' : '' ?> item" href="/admin/index">
+            All users
+        </a>
+    <?php endif; ?>
+    <div class="right menu">
+        <label class="item">Hello,
+            <a href="/user/profile?id=<?= $auth_user['id']; ?>">
+                <?= $auth_user['first_name']; ?>
+                <?= $auth_user['last_name']; ?>
+            </a>
+        </label>
+        <a href="/user/logout"
+           class="ui item">
+            Logout
+        </a>
+    </div>
+</div>
