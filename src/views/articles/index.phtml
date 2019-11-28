@@ -5,29 +5,25 @@
 
     <?php include_once "../views/articles/menu.phtml"; ?>
 
-<!--    <div class="ui grid" style="margin-top: 50px">-->
-<!--        <div class="row">-->
-<!--            <div class="three wide column">-->
-<!--                --><?php //if (isset($location) && $location === 'user') {
-//                    include_once "../views/articles/side-menu.phtml";
-//                }
-//                ?>
-<!--            </div>-->
-<!--            <div class="ten wide column">-->
-<!--                --><?php
-//                if(!empty($articles)):
-//                    include_once "../views/articles/article-list.phtml";
-//                else:
-//                    include_once "../views/articles/no-articles.phtml";
-//                endif;
-//                ?>
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="ui grid" style="margin-top: 50px">
+        <div class="row">
+            <div class="three wide column">
+                <?php if (isset($location) && $location === 'user') {
+                    include_once "../views/articles/side-menu.phtml";
+                }
+                ?>
+            </div>
+            <div class="ten wide column">
+                <?php
+                if(!empty($articles)):
+                    include_once "../views/articles/article-list.phtml";
+                else:
+                    include_once "../views/articles/no-articles.phtml";
+                endif;
+                ?>
+            </div>
+        </div>
+    </div>
 
-    <div id="app"></div>
-
-
-    <script src="/dist/bundle.js"></script>
 </body>
 </html>

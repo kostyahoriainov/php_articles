@@ -112,29 +112,12 @@ class ArticlesController extends Controller
         $this->checkAuth();
         $this->checkBanned();
 
-        switch (true){
-            case $status === Articles::STATUS_ACTIVE:
-                $side_location = 'active';
-                break;
-            case $status === Articles::STATUS_REMOVED:
-                $side_location = 'removed';
-                break;
-            case $status === Articles::STATUS_DRAFT:
-                $side_location = 'drafts';
-                break;
-            default:
-                $side_location = 'all';
-                break;
-        }
-
-        $edit_on = true;
         $location = 'user';
-        $articles = (new Articles())->userArticles($status, null);
 
         $user_id = (new Model())->getAuthUserId();
         $auth_user = (new Users())->getUserById($user_id);
 
-        require_once "../views/articles/index.phtml";
+        require_once "../views/articles/articles-app.phtml";
         die;
     }
 

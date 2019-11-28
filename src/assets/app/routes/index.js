@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Articles from "../views/Articles.vue";
+import Articles from "../views/Articles";
 
 Vue.use(VueRouter);
 

@@ -14,9 +14,8 @@
 </template>
 
 <script>
+    import SideMenu from "./components/SideMenu";
 
-
-    import SideMenu from "./components/SideMenu.vue";
     export default {
         components: {SideMenu}
     }

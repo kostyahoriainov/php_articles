@@ -8,6 +8,12 @@ module.exports = {
         filename: 'bundle.js'
     },
     mode: "development",
+    resolve: {
+        extensions: [ '.js', '.vue'],
+        alias: {
+            '@': path.join(__dirname, '/assets/'),
+        }
+    },
     module: {
         rules: [
             {

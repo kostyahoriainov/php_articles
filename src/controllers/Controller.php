@@ -8,6 +8,13 @@ class Controller
         return $_POST;
     }
 
+    protected function getRequestParams(): object
+    {
+        $request_body = file_get_contents('php://input');
+
+        return json_decode($request_body);
+    }
+
     protected function isUserAuth(): bool
     {
         return isset($_SESSION['auth']);

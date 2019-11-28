@@ -109,6 +109,12 @@ switch ($uri) {
     case '/api/articles':
         (new ApiController())->getArticles();
         break;
+    case '/api/articles/remove':
+        (new ApiController())->removeArticle();
+        break;
+    case '/api/articles/restore':
+        (new ApiController())->restoreArticle();
+        break;
     case '/':
         (new UsersController())->indexAction();
         break;
